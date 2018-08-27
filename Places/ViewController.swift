@@ -30,6 +30,7 @@ class ViewController: UIViewController {
   fileprivate let locationManager = CLLocationManager()
   fileprivate var startedLoadingPOIs = false
   fileprivate var places = [Place]()
+  fileprivate var arViewController: ARViewController!
   
   @IBOutlet weak var mapView: MKMapView!
   
@@ -48,6 +49,16 @@ class ViewController: UIViewController {
   }
   
   @IBAction func showARController(_ sender: Any) {
+    arViewController = ARViewController()
+    //1
+    arViewController.dataSource = self
+    //2
+    arViewController.maxVisibleAnnotations = 30
+    arViewController.headingSmoothingFactor = 0.05
+    //3
+    arViewController.setAnnotations(places)
+    
+    self.present(arViewController, animated: true, completion: nil)
   }
   
 }
