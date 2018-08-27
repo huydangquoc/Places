@@ -28,6 +28,8 @@ import CoreLocation
 class ViewController: UIViewController {
   
   fileprivate let locationManager = CLLocationManager()
+  fileprivate var startedLoadingPOIs = false
+  fileprivate var places = [Place]()
   
   @IBOutlet weak var mapView: MKMapView!
   
@@ -63,7 +65,17 @@ extension ViewController: CLLocationManagerDelegate {
         let span = MKCoordinateSpan(latitudeDelta: 0.014, longitudeDelta: 0.014)
         let region = MKCoordinateRegion(center: location.coordinate, span: span)
         mapView.region = region
-        // More code later...
+        
+        if !startedLoadingPOIs {
+          startedLoadingPOIs = true
+
+          let loader = PlacesLoader()
+          loader.loadPOIS(location: location, radius: 1000) { placesDict, error in
+            if let dict = placesDict {
+              print(dict)
+            }
+          }
+        }
       }
     }
   }
